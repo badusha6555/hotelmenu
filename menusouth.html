@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madras Darbar - South Indian Menu</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Satisfy&display=swap');
+        
+        :root {
+            --primary: #D35400;
+            --secondary: #F39C12;
+            --accent: #2ECC71;
+            --light: #FEF9F3;
+            --dark: #2C3E50;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(211, 84, 0, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 25%, rgba(243, 156, 18, 0.05) 0%, transparent 45%);
+        }
+
+        .cursive {
+            font-family: 'Satisfy', cursive;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-category {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-category:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 50%);
+            transform: rotate(30deg);
+            transition: all 0.5s ease;
+        }
+
+        .menu-category:hover .menu-header::before {
+            transform: rotate(0deg);
+        }
+
+        .menu-header h2 {
+            position: relative;
+            z-index: 2;
+        }
+
+        .menu-items {
+            background-color: white;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .menu-item {
+            padding: 0.85rem 0.5rem;
+            border-bottom: 1px dashed rgba(211, 84, 0, 0.2);
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+            border-radius: 8px;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(211, 84, 0, 0.05);
+            transform: translateX(8px);
+            padding-left: 1rem;
+        }
+
+        .menu-item:hover span {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .veg-icon {
+            min-width: 18px;
+            height: 18px;
+            border: 1px solid var(--accent);
+            border-radius: 3px;
+            position: relative;
+            margin-right: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .veg-icon::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            background-color: var(--accent);
+            border-radius: 1px;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover .veg-icon {
+            transform: scale(1.2);
+        }
+
+        .menu-item:hover .veg-icon::after {
+            transform: scale(1);
+        }
+
+        .pattern-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D35400' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .banner {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            margin-top: 4rem;
+            margin-bottom: 4rem;
+        }
+        
+        .banner::before {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 40%, transparent 50%);
+            transform: rotate(45deg);
+            animation: shine 5s infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; top: -100%; }
+            100% { left: 100%; top: 100%; }
+        }
+        
+        .spice-indicator {
+            display: inline-flex;
+            margin-left: auto;
+            color: #FF5722;
+        }
+        
+        .recommended-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: rotate(15deg);
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: rotate(15deg) scale(1); }
+            50% { transform: rotate(15deg) scale(1.1); }
+            100% { transform: rotate(15deg) scale(1); }
+        }
+        
+        .menu-category-wrapper {
+            position: relative;
+        }
+        
+        .header-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .decor-line {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), transparent);
+            margin: 1rem 0;
+        }
+        
+        .footer-pattern {
+            height: 6px;
+            background-image: linear-gradient(to right, var(--primary) 25%, transparent 25%, transparent 50%, var(--primary) 50%, var(--primary) 75%, transparent 75%, transparent 100%);
+            background-size: 16px 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-12">
+        <!-- Header -->
+        <header class="text-center mb-16" data-aos="fade-down">
+            <h1 class="text-5xl font-bold text-yellow-600 mb-3">
+                <span class="cursive">South Indian</span> Delicacies
+            </h1>
+            <div class="w-32 h-1 bg-yellow-500 mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Experience the authentic flavors of South India with our traditional dishes made from fresh ingredients and aromatic spices.
+            </p>
+        </header>
+        
+        <!-- Menu Grid -->
+        <div class="menu-grid">
+            <!-- Category 1: Idly & Vada -->
+            <div class="menu-category-wrapper" data-aos="fade-up">
+                <div class="menu-category">
+                    <div class="menu-header">
+                        <h2 class="text-xl font-semibold flex items-center">
+                            <span class="header-icon">🍚</span> Idly & Vada
+                        </h2>
+                    </div>
+                    <div class="menu-items">
+                        <div class="pattern-overlay"></div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>IDLY (3 PCS)</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>SAMBAR IDLY (2 PCS)</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>IDLY (2 PCS), VADA (1 PC)</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>SAMBAR IDLY (1 PC), VADA (1 PC)</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>PONGAL</span>
+                            <div class="spice-indicator">🌶️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 2: Classic Dosa -->
+            <div class="menu-category-wrapper" data-aos="fade-up" data-aos-delay="100">
+                <div class="menu-category">
+                    <div class="menu-header">
+                        <h2 class="text-xl font-semibold flex items-center">
+                            <span class="header-icon">🥞</span> Classic Dosa
+                        </h2>
+                    </div>
+                    <div class="menu-items">
+                        <div class="pattern-overlay"></div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>PLAIN DOSA</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>MASALA DOSA</span>
+                            <div class="spice-indicator">🌶️</div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>ONION DOSA</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>KALDOSA</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>ONION MASALA DOSA</span>
+                            <div class="spice-indicator">🌶️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 3: Cheese Varieties -->
+            <div class="menu-category-wrapper" data-aos="fade-up" data-aos-delay="200">
+                <div class="recommended-badge">Chef's Choice</div>
+                <div class="menu-category">
+                    <div class="menu-header">
+                        <h2 class="text-xl font-semibold flex items-center">
+                            <span class="header-icon">🧀</span> Cheese Varieties
+                        </h2>
+                    </div>
+                    <div class="menu-items">
+                        <div class="pattern-overlay"></div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>CHEESE DOSA</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>CHEESE MASALA DOSA</span>
+                            <div class="spice-indicator">🌶️</div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>BUTTER CHEESE MASALA DOSA</span>
+                            <div class="spice-indicator">🌶️</div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>BUTTER CHEESE DOSA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 4: Paneer Varieties -->
+            <div class="menu-category-wrapper" data-aos="fade-up" data-aos-delay="300">
+                <div class="menu-category">
+                    <div class="menu-header">
+                        <h2 class="text-xl font-semibold flex items-center">
+                            <span class="header-icon">🧈</span> Paneer Varieties
+                        </h2>
+                    </div>
+                    <div class="menu-items">
+                        <div class="pattern-overlay"></div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>PANEER DOSA</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>PANEER MASALA DOSA</span>
+                            <div class="spice-indicator">🌶️🌶️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 5: Butter Varieties -->
+            <div class="menu-category-wrapper" data-aos="fade-up" data-aos-delay="100">
+                <div class="menu-category">
+                    <div class="menu-header">
+                        <h2 class="text-xl font-semibold flex items-center">
+                            <span class="header-icon">🧈</span> Butter Varieties
+                        </h2>
+                    </div>
+                    <div class="menu-items">
+                        <div class="pattern-overlay"></div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>BUTTER DOSA</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>BUTTER MASALA DOSA</span>
+                            <div class="spice-indicator">🌶️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 6: Rava Varieties -->
+            <div class="menu-category-wrapper" data-aos="fade-up" data-aos-delay="200">
+                <div class="menu-category">
+                    <div class="menu-header">
+                        <h2 class="text-xl font-semibold flex items-center">
+                            <span class="header-icon">🍜</span> Rava Varieties
+                        </h2>
+                    </div>
+                    <div class="menu-items">
+                        <div class="pattern-overlay"></div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>RAVA DOSA</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>RAVA MASALA DOSA</span>
+                            <div class="spice-indicator">🌶️</div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>ONION RAVA DOSA</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>ONION RAVA MASALA DOSA</span>
+                            <div class="spice-indicator">🌶️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 7: Ghee Varieties -->
+            <div class="menu-category-wrapper" data-aos="fade-up" data-aos-delay="300">
+                <div class="menu-category">
+                    <div class="menu-header">
+                        <h2 class="text-xl font-semibold flex items-center">
+                            <span class="header-icon">🥄</span> Ghee Varieties
+                        </h2>
+                    </div>
+                    <div class="menu-items">
+                        <div class="pattern-overlay"></div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>GHEE ROAST</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>GHEE MASALA DOSA</span>
+                            <div class="spice-indicator">🌶️</div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>GHEE RAVA DOSA</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>GHEE RAVA MASALA DOSA</span>
+                            <div class="spice-indicator">🌶️🌶️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 8: Uthappam -->
+            <div class="menu-category-wrapper" data-aos="fade-up" data-aos-delay="100">
+                <div class="recommended-badge">Popular!</div>
+                <div class="menu-category">
+                    <div class="menu-header">
+                        <h2 class="text-xl font-semibold flex items-center">
+                            <span class="header-icon">🍕</span> Uthappam
+                        </h2>
+                    </div>
+                    <div class="menu-items">
+                        <div class="pattern-overlay"></div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>MIX VEG UTHAPPAM</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>CARROT ONION UTHAPPAM</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>ONION UTHAPPAM</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>ONION TOMATO UTHAPPAM</span>
+                            <div class="spice-indicator">🌶️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category 9: Special Items -->
+            <div class="menu-category-wrapper" data-aos="fade-up" data-aos-delay="200">
+                <div class="menu-category">
+                    <div class="menu-header">
+                        <h2 class="text-xl font-semibold flex items-center">
+                            <span class="header-icon">✨</span> Special Items
+                        </h2>
+                    </div>
+                    <div class="menu-items">
+                        <div class="pattern-overlay"></div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>MYSORE MASALA DOSA</span>
+                            <div class="spice-indicator">🌶️🌶️</div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>POORI MASALA</span>
+                            <div class="spice-indicator">🌶️</div>
+                        </div>
+                        <div class="menu-item">
+                            <div class="veg-icon"></div>
+                            <span>CHOLE BHATURE</span>
+                            <div class="spice-indicator">🌶️🌶️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Promotional Banner -->
+        <div class="banner shadow-xl" data-aos="zoom-in">
+            <div class="flex flex-col lg:flex-row justify-between items-center text-white">
+                <div>
+                    <h3 class="text-3xl font-bold mb-2">
+                        <span class="cursive">Today's Special</span>
+                    </h3>
+                    <p class="text-xl opacity-90">Try our signature Mysore Masala Dosa with homemade chutney collection</p>
+                </div>
+                <button class="mt-4 lg:mt-0 bg-white text-orange-500 font-bold py-3 px-6 rounded-full hover:bg-orange-100 transition duration-300 transform hover:scale-105">
+                    Order Now
+                </button>
+            </div>
+        </div>
+        
+        <!-- Footer Note -->
+        <div class="mt-16 text-center" data-aos="fade-up">
+            <div class="decor-line mx-auto w-32 mb-6"></div>
+            <p class="text-gray-600">All dishes served with coconut chutney and sambar unless specified otherwise.</p>
+            <p class="text-gray-600 mt-2">
+                <span class="text-orange-500">🌶️</span> - Spicy | 
+                <span class="text-orange-500">🌶️🌶️</span> - Very Spicy
+            </p>
+            <div class="mt-8 text-gray-500">© 2025 Madras Darbar Indian Restaurant</div>
+            <div class="footer-pattern mt-6"></div>
+        </div>
+    </div>
+    
+    <!-- Initialize AOS Animation Library -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out',
+                once: false,
+                mirror: true
+            });
+        });
+    </script>
+</body>
+</html>
